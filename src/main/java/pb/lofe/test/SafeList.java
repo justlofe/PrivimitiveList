@@ -139,7 +139,7 @@ public final class SafeList<T> {
     }
 
     /**
-     * Clears the entirely list
+     * Clears the entire list
      */
     public void clear() {
         init(8, null);
