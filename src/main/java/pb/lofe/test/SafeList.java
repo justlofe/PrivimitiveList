@@ -1,9 +1,10 @@
 package pb.lofe.test;
 
+import java.lang.reflect.Array;
 import java.util.function.Consumer;
 
 /**
- * SafeList is a zero-import list which creates a list, where null values can not be saved.
+ * SafeList is a list, where null values can not be saved.
  * <p>
  * Example:
  * <pre>
@@ -13,20 +14,20 @@ import java.util.function.Consumer;
  * list.add("bar");
  *
  * list.remove("foo");
- * list.get(0) // Will return "bar", because of "foo" value deleted from the list.
+ * list.get(0); // Will return "bar", because of "foo" value deleted from the list.
  * }
  * </pre>
  *
  * @param <T> Type of list will be created
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public final class SafeList<T> {
 
     private Object[] array;
     private int length;
 
     public SafeList() {
-        init(8, null);
+        this(8);
     }
 
     public SafeList(int capacity) {
@@ -59,7 +60,7 @@ public final class SafeList<T> {
     }
 
     /**
-     * @param capacity Will be the same as the values array length if array presented
+     * @param capacity Should be the same as the values array length if array presented
      * @param values Values that will be copied to list
      */
     private void init(int capacity, Object[] values) {
@@ -129,9 +130,9 @@ public final class SafeList<T> {
         if(elements.length == 0) return false;
 
         int remainingSize = getRemainingSize();
-        if(remainingSize < elements.length) {
+        if(remainingSize <= elements.length) {
             int requiredSize = elements.length - getRemainingSize();
-            expandArray(requiredSize + 8);
+            expandArray(requiredSize + 9);
         }
 
         System.arraycopy(elements.array, 0, array, getNearestEmptyIndex(), elements.length);
@@ -216,6 +217,15 @@ public final class SafeList<T> {
             if(array[i] != null) return length - i;
         }
         return length;
+    }
+
+    @SuppressWarnings("SuspiciousSystemArraycopy")
+    public T[] toArray(T[] a) {
+        if(a == null) return null;
+        int len = size();
+        T[] result = (T[]) Array.newInstance(a.getClass().getComponentType(), len);
+        System.arraycopy(array, 0, result, 0, len);
+        return result;
     }
 
     public java.util.List<T> toJavaUtilList() {

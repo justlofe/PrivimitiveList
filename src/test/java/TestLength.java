@@ -8,16 +8,31 @@ public class TestLength {
         list.add("test");
         list.addAll("val", "123");
 
-        System.out.println(list.size());
+        val("size", list.size());
+        ln();
 
-        System.out.println("---");
-        list.forEach(System.out::println);
-
-        System.out.println("---");
         System.out.println(list.remove(1));
+        ln();
 
-        System.out.println("---");
         list.forEach(System.out::println);
+        ln();
+
+        ln("Array: ");
+        for (Object string: list.toArray(new String[0])) {
+            System.out.println(string);
+        }
+    }
+
+    public static void ln() {
+        System.out.println();
+    }
+
+    public static void ln(String ln) {
+        System.out.println(ln);
+    }
+
+    public static void val(String name, Object val) {
+        System.out.printf("%s: %s\n", name, val);
     }
 
 }
